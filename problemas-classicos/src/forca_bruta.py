@@ -3,14 +3,14 @@ import matplotlib.pyplot as plt
 import networkx as nx
 
 def is_independent(graph, subset):
-    """Verifica se o subconjunto dado de vértices é independente."""
+    #Verifica se o subconjunto dado de vértices é independente.
     for u, v in itertools.combinations(subset, 2):
         if v in graph[u]:
             return False
     return True
 
 def max_independent_set(graph):
-    """Encontra o maior conjunto independente usando força bruta."""
+    #Encontra o maior conjunto independente usando força bruta.
     vertices = list(graph.keys())
     max_set = []
     
@@ -23,18 +23,18 @@ def max_independent_set(graph):
     return max_set
 
 def build_graph_from_file(filename):
-    """Constrói o grafo com base em um arquivo .txt."""
+    #Constrói o grafo com base em um arquivo .txt.
     graph = {}
     
     with open(filename, 'r') as file:
         num_vertices = int(file.readline().strip())
         
-        # Inicializa os vértices no grafo
+        #Inicializa os vértices no grafo
         for i in range(num_vertices):
-            vertex = str(i)  # Usa números como vértices: 0, 1, 2, etc.
+            vertex = str(i)
             graph[vertex] = []
         
-        # Lê as arestas do arquivo
+        #Lê as arestas do arquivo
         while True:
             line = file.readline().strip()
             if line == "-1":
@@ -46,34 +46,37 @@ def build_graph_from_file(filename):
     return graph
 
 def plot_graph(graph, independent_set):
-    """Plota o grafo e destaca o conjunto independente."""
+    #Plota o grafo e destaca o conjunto independente.
     G = nx.Graph()
     
-    # Adiciona nós e arestas ao grafo
+    #Adiciona nós e arestas ao grafo
     for node, neighbors in graph.items():
         G.add_node(node)
         for neighbor in neighbors:
             if not G.has_edge(node, neighbor):
                 G.add_edge(node, neighbor)
     
-    pos = nx.spring_layout(G)  # Layout do grafo
+    pos = nx.spring_layout(G)  #Layout do grafo
     
-    # Desenha todos os nós e arestas
+    #Desenha todos os nós e arestas
     nx.draw(G, pos, with_labels=True, node_color='lightgray', edge_color='gray', node_size=500, font_size=16)
     
-    # Destaca o maior conjunto independente
+    #Destaca o maior conjunto independente
     nx.draw_networkx_nodes(G, pos, nodelist=independent_set, node_color='lightgreen', node_size=500)
     
     plt.title("Grafo com Conjunto Independente Destacado")
-    plt.savefig('graph.png')  # Salva o gráfico como um arquivo
-    plt.close()  # Fecha a figura para liberar memória
+    plt.savefig('graph.png')  #Salva o gráfico como um arquivo
+    plt.close()  #Fecha a figura
 
 
-# Exemplo de uso
+#Parte utilizada na realicacao de testes manuais
 if __name__ == "__main__":
+    #Constrói o grafo a partir do arquivo
     graph = build_graph_from_file("testes/in1.txt")
     
+    #Encontra o conjunto independente
     max_set = max_independent_set(graph)
     print("O maior conjunto independente é:", max_set)
     
+    #Plota o grafo e destaca o conjunto independente
     plot_graph(graph, max_set)

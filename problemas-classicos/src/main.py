@@ -8,7 +8,8 @@ def main():
 
     while op != 0:
         problem_path = ""
-
+        
+        #Seleciona qual será o arquivo de exemplo utilizado para teste 
         match(op):
             case 1:
                 problem_path = "testes/in1.txt"
@@ -32,7 +33,7 @@ def main():
                 problem_path = "testes/in10.txt"
             case _:
                 print("Valor Inválido!")
-                continue  # Volta ao início do loop se o valor for inválido
+                continue
         
 
         print("Escolha a abordagem para resolver o problema:")
@@ -40,6 +41,8 @@ def main():
         print("2 - Heurística do Algoritmo de Vizinhança")
         op = int(input("Digite o número da abordagem: "))
 
+        #Seleciona e executa qual o tipo de abordagem será utilizada para resolver o problema do CI
+        #no grafo selecionado
         match(op):
             case 1:
                 graph = forca_bruta.build_graph_from_file(problem_path)

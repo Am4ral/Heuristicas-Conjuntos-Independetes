@@ -1,18 +1,29 @@
-VENV = venv
-PYTHON = $(VENV)/bin/python3
-PIP = $(VENV)/bin/pip
+# Variáveis
+VENV_DIR = src/.venv
+PYTHON = $(VENV_DIR)/bin/python
+PIP = $(VENV_DIR)/bin/pip
 
-# default arguments
-nodes = "fb-pages-food.nodes"
-edges = "fb-pages-food.edges"
+# Alvo principal
+all: run
 
-$(VENV)/bin/activate: requirements.txt
-	python3 -m venv $(VENV)
-	$(PIP) install -r requirements.txt
+# Cria o ambiente virtual
+$(VENV_DIR):
+	@echo "Criando o ambiente virtual..."
+	python3 -m venv $(VENV_DIR)
 
-run: $(VENV)/bin/activate
-	$(PYTHON) main.py $(nodes) $(edges)
+# Instala as dependências
+install: $(VENV_DIR)
+	@echo "Instalando dependências..."
+	$(PIP) install -r src/requirements.txt
 
+# Executa o main.py
+run: install
+	@echo "Executando o main.py..."
+	$(PYTHON) src/main.py
+
+# Limpa o ambiente virtual
 clean:
-	rm -rf __pycache__
-	rm -rf $(VENV)
+	@echo "Removendo o ambiente virtual..."
+	rm -rf $(VENV_DIR)
+
+.PHONY: all install run clean
